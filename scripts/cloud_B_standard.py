@@ -20,7 +20,7 @@ def main():
     args = ap.parse_args()
 
     train_args = SimpleNamespace(
-        epochs=200, base=64, depth=4, patch=256, batch=32, lr=1e-3,
+        epochs=200, base=64, depth=4, patch=192, batch=8, lr=1e-3,
         seed=args.seed, split_seed=42, val_frac=0.13,
         patience=30, workers=4,
         short_factor=2, noise_aug=True, w_grad=0.2, w_aux=0.1,
