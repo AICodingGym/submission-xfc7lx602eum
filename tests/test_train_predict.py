@@ -19,11 +19,12 @@ def _make_small_model():
 
 def test_evaluate_decreasing_loss():
     # 训练一步后，验证 RMSE 应显著下降（模型确实在学）
+    # 使用 V1 模型（1 通道）以保持测试兼容性
     device = torch.device("cpu")
     model = _make_small_model().to(device)
     from src.dataset import DocDataset
 
-    ds = DocDataset(["101"], train=True, patch=64, seed=0)
+    ds = DocDataset(["101"], train=True, patch=64, seed=0, with_features=False)
     x, y = ds[0]
     x = x[None].to(device)
     y = y[None].to(device)

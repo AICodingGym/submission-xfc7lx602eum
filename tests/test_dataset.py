@@ -17,7 +17,9 @@ def test_len_and_load():
     assert len(ds) == 5
     x, y = ds[0]
     assert isinstance(x, torch.Tensor) and isinstance(y, torch.Tensor)
-    assert x.shape == (1, 128, 128)
+    # V2 默认 3 通道（灰度 + 局部均值 + 局部方差）
+    assert x.shape == (3, 128, 128)
+    assert y.shape == (1, 128, 128)
     assert x.dtype == torch.float32
     assert x.min() >= 0.0 and x.max() <= 1.0
 
@@ -25,14 +27,15 @@ def test_len_and_load():
 def test_train_crop_patch_size():
     ds = DocDataset(["101"], train=True, patch=64, seed=0)
     x, y = ds[0]
-    assert x.shape == (1, 64, 64) and y.shape == (1, 64, 64)
+    assert x.shape == (3, 64, 64) and y.shape == (1, 64, 64)
 
 
 def test_eval_full_size():
-    # 验证模式不裁剪，输出全图
+    # 验证模式不裁剪，输出全图（3 通道输入 + 1 通道标签）
     ds = DocDataset(["101"], train=False)
     x, y = ds[0]
-    assert x.shape == (1, C.IMG_H, C.IMG_W)
+    assert x.shape == (3, C.IMG_H, C.IMG_W)
+    assert y.shape == (1, C.IMG_H, C.IMG_W)
 
 
 def test_augment_x_y_geometrically_consistent():
